@@ -1,0 +1,16 @@
+The fast route responded immediately regardless of whether the slow route was also called.
+This indicates that Node.js, as discussed in the notes, handles concurrent requests as
+they are completed in real time, rather than maintaining a single, strict stack of 
+instructions.
+
+As requests are sent, they are fed to the event loop, which delegates the tasks to the
+thread pool. Once a task is completed, the event loop returns the response to the 
+original source of the request. This can be seen in the console as the "Slow task started"
+message can be seen shortly after the request is sent, while the "Slow task finished"
+message doesn't print until the server is ready to return the slow response.
+
+All of this is relevant because a server has to operate in a predictable and reliable way
+regardless of whether multiple users are trying to access it concurrently. A server that
+could only respond to requests in the order they were sent would be frustrating and waste
+the users' time. A user expects the website or API they're accessing to take roughly the
+same amount of time to complete the same task.
